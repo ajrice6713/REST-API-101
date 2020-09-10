@@ -16,9 +16,13 @@ This repository intends to serve as a 101 overview of REST API's with a focus on
     * [4xx](#4xx)
     * [5xx](#5xx)
   * [Synchronicity (Not the Police album)](#Synchronicity)
-  * [Webhooks]()
-  * [XML vs. JSON]()
-* [The Bandwidth API's]()
+    * [Synchronous](#Synchronous)
+    * [Asynchronous](#Asynchronous)
+  * [Webhooks](#Webhooks)
+  * [XML vs. JSON](#XMLvJSON)
+    * [XML](#XML)
+    * [JSON](#JSON)
+* [The Bandwidth API's](#BandwidthAPIs)
   * [Account Configuration]()
   * [IRIS]()
   * [Messaging]()
@@ -57,7 +61,7 @@ Each HTTP request can include optional headers as well that can act in a plethor
 Some of the most common headers include `Authorization`, `Content-Type`, and `Content-Length`. Many headers are set automatically by the service building the request, but in some instances they need to be added/modified for the request to work.
 
 #### Body {#HTTPBody}
-Lastly, certain methods require a request body. The body contains the resource information we are looking to add or modify. The structure of the body varies between API's and endpoints, but a good API will validate the information in the body and make sure it falls in line with what is expected. If the body is malformed or contains something that the API doesn't expect, the user will see an error in the response to their HTTP request. A sample request to send a text message using the Bandwidth API looks like this:
+Lastly, certain methods require a request body. The body contains the resource information we are looking to add or modify. The structure of the body varies between API's and endpoints, but a good API will validate the information in the body and make sure it falls in line with what is expected. If the body is malformed or contains something that the API doesn't expect, the user will see an error in the response to their HTTP request. A sample JSON request to send a text message using the Bandwidth API looks like this:
 
 ```JSON
 {
@@ -129,3 +133,30 @@ A 5xx response generally indicates an error on the server side
 An exhausted list of HTTP status codes can be found [here](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
 
 ### Synchronicity (Not the Police album) {#Synchronicity}
+Also a popular concept in teaching, API's can be synchronous or asynchronous. More specifically, *endpoints* can be synchronous or asynchronous, an API can contain any combination of synchronous or asynchronous functions. So what does this mean exactly?
+
+##### Synchronous {#Synchronous}
+A synchronous function is one that completes over the course of the request and response sequence. Let's look at an example - take `www.baseurl.com/users`, with a synchronous function a `POST` request to this API would create a user resource. The API response would most likely return a `201 Created` status with information in the body that pertains to the newly created `user` resource, like an ID and timestamp of when that user was created.
+
+##### Asynchronous {#Asynchronous}
+An asynchronous function is one that completes *after* the request and response cycle has completed. Looking at the above example, we could still make a `POST` request to `www.baseurl.com/users`, but the response we get back will differ slightly, and the receipt of that response does not indicate that our new user resource has been created. A response to an asynchronous function might return a `200 OK` status indicating that the request was received and that the back end code is processing the request. In the response you would still receive a unique identifier for the new resource, but you may also see a status indicating your request is in a received or processing state.
+
+To check the status of the newly created resource, you would need to make a `GET` request to the new resource ID, which, in a good API, would be located at `www.baseurl.com/users/{userId}`. The `GET` request should return any information about the resource, as well as the status of that resources creation.
+
+The majority of functions in the Bandwidth API's are asynchronous.
+
+### Webhooks {#Webhooks}
+"But mom, I don't *want* to make a GET request every time I create a resource"
+
+With webhooks - you don't have to! A webhook is essentially an HTTP request that an API or service sends to your server, not to be confused with the HTTP response the API sends back to a user request. Like a request, a webhook is sent to a specified URL using an HTTP mehtod and contains headers and a body. In relation to asynchronous functions, API's allow users to set input URL's to receive webhooks when resources requested have been created.
+
+Bandwidth utilizes webhooks in all of its API's in the form of messaging callbacks, voice callbacks, and subscriptions.
+
+### XML vs. JSON {#XMLvJSON}
+The request and response bodies can be formatted in a number of different ways - they can even include things like files. The language of the request body must be noted in the `Content-Type` header of the request. The two formats relevant to Bandwidth are XML and JSON.
+
+##### XML {#XML}
+
+##### JSON {#JSON}
+
+## The Bandwidth API's {#BandwidthAPIs}
