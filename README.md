@@ -99,7 +99,7 @@ Once your request has been constructed - it's time to send it! At a very high-le
 
 It is important to note that just because your request was received, what you were requesting may not have been processed yet, and the successful response merely indicates that the API received your request and that it passed the necessary checks needed to be passed onto the backend code. This behavior is asynchronous and will be discussed in detail in a later section.
 
-Here are some of the popular error codes that Bandwidth returns.
+Here are some of the common status codes that Bandwidth returns.
 
 ##### 2xx Responses {#2xx}
 A 2xx response generally indicates a successful request.
@@ -242,5 +242,5 @@ Like XML, JSON can contain nested name value pairs. The Bandwidth callbacks for 
     }
   }
 ```
-Note the value for `"message"` is another JSON object nested within the parent. 
+Note the value for `"message"` is another JSON object nested within the parent.
 ## The Bandwidth API's {#BandwidthAPIs}
