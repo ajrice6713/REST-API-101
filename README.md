@@ -156,7 +156,91 @@ Bandwidth utilizes webhooks in all of its API's in the form of messaging callbac
 The request and response bodies can be formatted in a number of different ways - they can even include things like files. The language of the request body must be noted in the `Content-Type` header of the request. The two formats relevant to Bandwidth are XML and JSON.
 
 ##### XML {#XML}
+XML, or Extensible Markup Language, is a standard used to format data in both a human and machine readable way. XML is comprised of nested tags used to store and identify data in a flexible way. XML tags can be nested inside of other XML tags in a parent/child relationship. Tags can also contain certain attributes to help classify data. Tags require an open and close tag to indicate where a certain bit of data starts and stops, which looks like this:
+```XML
+<Document>API 101</Document>
+```
+
+With an attribute, the XML would look like this:
+```XML
+<Document format='PDF'>API 101</Document>
+```
+
+XML allows the creation of custom tags, and there are even custom versions of XML that tailor to specific needs - an example being Bandwidth's BXML language used by the voice API. The IRIS API is entirely XML based. Here are some examples:
+
+######  Ordering a Phone Number in IRIS
+```XML
+<Order>
+    <CustomerOrderId>123456789</CustomerOrderId>
+    <Name>Test order name</Name>
+    <ExistingTelephoneNumberOrderType>
+        <TelephoneNumberList>
+            <TelephoneNumber>9492366947</TelephoneNumber>
+        </TelephoneNumberList>
+    </ExistingTelephoneNumberOrderType>
+    <SiteId>34692</SiteId>
+    <PeerId>627343</PeerId>
+</Order>
+```
+When tags are nested inside of other tags, they are called elements. The parent tag in the above example is `<Order>`, which makes `<Name>` an element of the `<Order>` object.
+
+######  Responding to a call event with BXML
+```XML  
+<Response>
+   <Gather gatherUrl="https://gather.url/nextBXML" firstDigitTimeout="10" terminatingDigits="#">
+      <SpeakSentence voice="kate">Please press a digit.</SpeakSentence>
+   </Gather>
+</Response>
+```
 
 ##### JSON {#JSON}
+JSON, or JavaScript Object Notation, is another data interchange format that is easily readable by both humans and machines, and consists of a collection of name/value pairs. JSON is widely popular because it is easy to parse (read), and most programming languages natively support it, meaning less time spent coding for developers and less troubleshooting when it comes to issues with the data itself. The Bandwidth Messaging API is exclusively JSON, and the voice API uses JSON in conjunction with BXML. Lets look at some examples of JSON request bodies:
 
+###### Sending a group MMS in the Messaging API
+```JSON
+{
+    "to"            : ["+19198675309", "19195554321ß"],
+    "from"          : "+19195551234",
+    "text"          : "This is a test text messsage",
+    "media"         : "https://www.example.com/media/{mediaId}",
+    "applicationId" : "1234ab56-789c-01de-2f34-56g7h8i901j2",
+    "tag"           : "test mms message"
+}
+```
+
+###### Creating an Outbound Phone Call
+```JSON
+{
+    "to"            : "+19198675309",
+    "from"          : "+19195551234",
+    "answerUrl"     : "https://www.example.com/answerUrl",
+    "applicationId" : "1234ab56-789c-01de-2f34-56g7h8i901j2"
+}
+```
+Like XML, JSON can contain nested name value pairs. The Bandwidth callbacks for messaging and voice both contain nested information in name tags.
+
+###### Bandwidth Inbound Messaging Webhook
+```JSON
+{
+    "type"        : "message-received",
+    "time"        : "2016-09-14T18:20:16Z",
+    "description" : "Incoming message received",
+    "to"          : "+12345678902",
+    "message"     : {
+      "id"            : "14762070468292kw2fuqty55yp2b2",
+      "time"          : "2016-09-14T18:20:16Z",
+      "to"            : ["+12345678902"],
+      "from"          : "+12345678901",
+      "text"          : "Hey, check this out!",
+      "applicationId" : "93de2206-9669-4e07-948d-329f4b722ee2",
+      "media"         : [
+        "https://messaging.bandwidth.com/api/v2/users/{accountId}/media/14762070468292kw2fuqty55yp2b2/0/bw.png"
+        ],
+      "owner"         : "+12345678902",
+      "direction"     : "in",
+      "segmentCount"  : 1
+    }
+  }
+```
+Note the value for `"message"` is another JSON object nested within the parent. 
 ## The Bandwidth API's {#BandwidthAPIs}
