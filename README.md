@@ -23,18 +23,25 @@ This repository intends to serve as a 101 overview of REST API's with a focus on
     * [XML](#xml)
     * [JSON](#json)
 * [The Bandwidth API's](#the-bandwidth-apis)
-  * [Account Configuration]()
-  * [IRIS]()
-  * [Messaging]()
-  * [Voice]()
-    * [BXML]()
-  * [e911]()
-  * [Subscriptions]()
-  * [Common User Mistakes]()
-  * [Bandwidth API FAQ's]()
-    * [Rate Limits]()
-* [Resources and Tools]()
-* [Glossary]()
+  * [Account Configuration](#account-configuration)
+    * [Users](#users)
+    * [Sub-Accounts (Sites)](#sub-accounts-sites)
+    * [Locations (Sippeers)](#locations-sippeers)
+    * [Applications](#applications)
+  * [IRIS](#iris)
+  * [Messaging](#messaging)
+    * [Message Callbacks](#message-callbacks)
+    * [Message Errors](#message-errors)
+  * [Voice](#voice)
+    * [Voice Callbacks](#voice-callbacks)
+    * [BXML](#bxml)
+  * [e911](#e911)
+  * [Subscriptions](#subscriptions)
+  * [Common User Mistakes](#common-user-mistakes)
+  * [Bandwidth API FAQ's](#bandwidth-api-faqs)
+    * [Rate Limits](#rate-limits)
+* [Resources and Tools](#resources-and-tools)
+* [Glossary](#glossary)
 
 ## API 101
 
@@ -47,7 +54,7 @@ API's are everywhere, and we interact with them on a daily basis. Posting to soc
 To interact with an API, you would send an HTTP request containing a method, URL, headers, and body.
 
 #### Methods
-We will discuss HTTP methods in more detail in a [later section](#Methods), but, at a high level, the method lets the API know what kind of request you are making. Like the restaurant example, you would make a `GET` request to the server to get more information about a menu item, a `POST` request to place your order, a `PUT` request to modify it, and a `DELETE` request to cancel it.
+We will discuss HTTP methods in more detail in a [later section](#restful-methods), but, at a high level, the method lets the API know what kind of request you are making. Like the restaurant example, you would make a `GET` request to the server to get more information about a menu item, a `POST` request to place your order, a `PUT` request to modify it, and a `DELETE` request to cancel it.
 
 #### URLs
 The URL in the request determines where the headers and body information is sent. In an API, URL's are generally comprised of 2 parts; a base URL and an an endpoint. Lets look at an IRIS URL for example:
@@ -77,9 +84,7 @@ Lastly, certain methods require a request body. The body contains the resource i
 ### Authentication
 A major component of API requests is authentication. You wouldn't want someone using Facebook's API to make posts in your name, so to protect you, Facebook requires your username and password to be included in the request to change anything on your account. To verify the identity of the requester, some API's require some form of unique identification in the form of an `Authorization` header in the HTTP request.
 
-Bandwidth uses basic authentication and requires both the username and password to be sent in the Authorization header in a specific format - `username:password` - which then needs to be encoded in base64. A complete HTTP Header would look like this: `Authorization: Basic dXNlcm5hbWU6cGFzc3N3b3Jk`.
-
-Online encoding/decoding [tools](https://www.base64encode.org/) are available for free to help encode and decode credentials. Additionally, many programming languages can perform this encoding natively.
+Bandwidth uses basic authentication and requires both the username and password to be sent in the Authorization header in a specific format - `username:password` - which then needs to be encoded in base64. A complete HTTP Header would look like this: `Authorization: Basic dXNlcm5hbWU6cGFzc3N3b3Jk`. More information on Bandwidth's credentials requirements can be found [here](https://dev.bandwidth.com/guides/accountCredentials.html).
 
 ### RESTful Methods
 As stated above, the method defined in the request determines the action taken at the endpoint. Bandwidth's API is what is known as a REST API (compared to a SOAP API, more information on the differences between the two can be found [here](https://smartbear.com/blog/test-and-monitor/soap-vs-rest-whats-the-difference/)).
@@ -244,4 +249,47 @@ Like XML, JSON can contain nested name value pairs. The Bandwidth callbacks for 
   }
 ```
 Note the value for `"message"` is another JSON object nested within the parent.
+
 ## The Bandwidth API's
+Bandwidth uses a separate API for each of its services. There are similarities between the services, like the username/password you use to make requests as well as account and application ID's, but those relationships are all handled on the back end - each API/product vertical is it's own separate entity and acts independently of the others with very few exceptions (ex. Web-RTC utilizes the Voice API).
+
+The Bandwidth API's allow our customer to automate number provisioning, sending and receiving text messages, making and receiving phone calls - essentially facilitating communication across multiple channels with minimal human intervention required.
+
+Bandwidth's API's follows basic REST practices with the exception of the DASH EVS API, which allows for both REST and SOAP requests. This guide will not cover the EVS SOAP API.
+
+### Account Configuration
+The first step to successful API usage at bandwidth is a correctly configured account.
+
+##### Users
+##### Sub-Accounts (Sites)
+##### Locations (Sippeers)
+##### Applications
+
+### IRIS
+
+### Messaging
+##### Message Callbacks
+##### Message Errors
+
+### Voice
+##### Voice Callbacks
+##### BXML
+
+### e911
+##### IRIS e911
+##### DASH
+
+### Subscriptions
+
+### Common User Mistakes
+
+### Bandwidth API FAQ's
+##### Rate Limits
+
+## Resources and Tools
+##### Postman
+##### Ngrok
+##### RequestBin
+##### Dev.Bandwidth
+
+## Glossary
