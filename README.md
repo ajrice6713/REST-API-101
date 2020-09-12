@@ -154,7 +154,7 @@ The majority of functions in the Bandwidth API's are asynchronous.
 ### Webhooks
 "But mom, I don't *want* to make a GET request every time I create a resource"
 
-With webhooks - you don't have to! A webhook is essentially an HTTP request that an API or service sends to your server, not to be confused with the HTTP response the API sends back to a user request. Like a request, a webhook is sent to a specified URL using an HTTP mehtod and contains headers and a body. In relation to asynchronous functions, API's allow users to set input URL's to receive webhooks when resources requested have been created.
+With webhooks - you don't have to! Think of it like a push notification; A webhook is essentially an HTTP request that an API or service sends to your server, not to be confused with the HTTP response the API sends back to a user request. Like a request, a webhook is sent to a specified URL using an HTTP method and contains headers and a body. In relation to asynchronous functions, API's allow users to set input URL's to receive webhooks when resources requested have been created.
 
 Bandwidth utilizes webhooks in all of its API's in the form of messaging callbacks, voice callbacks, and subscriptions.
 
@@ -266,16 +266,20 @@ The first step to successful API usage at bandwidth is a correctly configured ac
 ##### Applications
 
 ### IRIS
+##### Overview
 
 ### Messaging
+##### Overview
 ##### Message Callbacks
 ##### Message Errors
 
 ### Voice
+##### Overview
 ##### Voice Callbacks
 ##### BXML
 
 ### e911
+##### Overview
 ##### IRIS e911
 ##### DASH
 
