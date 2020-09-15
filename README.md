@@ -258,30 +258,43 @@ The Bandwidth API's allow our customer to automate number provisioning, sending 
 Bandwidth's API's follows basic REST practices with the exception of the DASH EVS API, which allows for both REST and SOAP requests. This guide will not cover the EVS SOAP API.
 
 ### Account Configuration
-The first step to successful API usage at bandwidth is a correctly configured account.
+The first step to successful API usage at bandwidth is a correctly configured account. An improperly setup account can lead to several common failures that we will discuss in a later section - ensuring proper account setup can mitigate the need for several common customer support issues.
+
+Bandwidth follows an account -> Sub-Account -> location hierarchy. A single IRIS account can have multiple sub-accounts, and each sub account can have multiple locations. Parent IRIS accounts can have multiple applications as well, and each application can be a voice or messaging application. To access the account, a user is needed with a set username, password, and roles.
 
 ##### Users
+Users can be UI (user-interface) only, API only, or BOTH. API only users do not require password resets, whereas the other two user types do require password resets. A guide on creating API users can be found [here](https://dev.bandwidth.com/guides/accountCredentials.html#top). Because the username and password need to be sent in the HTTP API requests, it is more beneficial to create an API only user and provide those credentials in your API calls, because there wont be a risk of credentials expiring and your automated API calls suddenly failing with `401 Unauthorized` errors due to an expired or incorrect password. Users can have different roles toggled on or off as well, and these roles determine which parts of the API a user can access. If a certain user role is disabled and the user tries to make an API call that falls under that role, they will see a `403 Forbidden` response from the API, indicating that even though the username/password combination is a valid one, they are unable to perform the action they are attempting.
+
 ##### Sub-Accounts (Sites)
-##### Locations (Sippeers)
+Sub-Accounts exist for organizational purposes, and are referred to as Sites in the API. At least one sub account is required per account with a valid address for billing purposes.
+
+##### Locations (Sip-Peers)
+A Location, referred to as a SipPeer in the API, can best be thought of as a logical grouping of phone numbers. Locations can control things like SMS and MMS enablement, and any telephone numbers added to the location will inherit its settings by default. One location is required to utilize Bandwidth's service, and one default location is required per sub-account. When provisioning telephone numbers, if a location is not specified in the API request, the number will provision to the default location of that sub-account.
+
 ##### Applications
+Bandwidth Applications are where users set the callback URL for webhooks. An application can either be designated as a voice or messaging application, and users can associate one or multiple locations to each application. It is important to note that a location can only be associated to 1 messaging application and 1 voice application - but that an application can have many locations associated to it. When a messaging/voice event happens on a number, Bandwidth checks the IRIS database to determine which location the number lives in and what application it is associated to, and it is there we find the callback URL to send the webhook for the event.
 
 ### IRIS
 ##### Overview
-
-### Messaging
-##### Overview
-##### Message Callbacks
-##### Message Errors
+Base URL: `https://dashboard.bandwidth.com/api/`
 
 ### Voice
 ##### Overview
+Base URL: `https://voice.bandwidth.com/api/v2/accounts/{accountId}`
 ##### Voice Callbacks
 ##### BXML
 
+### Messaging
+##### Overview
+Base URL: `https://messaging.bandwidth.com/api/v2/users/{accountId}`
+##### Message Callbacks
+##### Message Errors
+
 ### e911
 ##### Overview
-##### IRIS e911
+Base URL: `https://service.dashcs.com/dash-api/xml/emergencyprovisioning/v1`
 ##### DASH
+##### IRIS e911
 
 ### Subscriptions
 
@@ -289,6 +302,7 @@ The first step to successful API usage at bandwidth is a correctly configured ac
 
 ### Bandwidth API FAQ's
 ##### Rate Limits
+##### Static IP's
 
 ## Resources and Tools
 ##### Postman
