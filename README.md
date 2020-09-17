@@ -29,12 +29,9 @@ This repository intends to serve as a 101 overview of REST API's with a focus on
     * [Locations (Sippeers)](#locations-sippeers)
     * [Applications](#applications)
   * [IRIS](#iris)
-  * [Messaging](#messaging)
-    * [Message Callbacks](#message-callbacks)
-    * [Message Errors](#message-errors)
   * [Voice](#voice)
-    * [Voice Callbacks](#voice-callbacks)
     * [BXML](#bxml)
+  * [Messaging](#messaging)
   * [e911](#e911)
   * [Subscriptions](#subscriptions)
   * [Common User Mistakes](#common-user-mistakes)
@@ -277,22 +274,45 @@ Bandwidth Applications are where users set the callback URL for webhooks. An app
 ### IRIS
 ##### Overview
 Base URL: `https://dashboard.bandwidth.com/api/`
+Language: `XML`
+Team Slack Channel: #irischat
+[Developer Documentation](https://dev.bandwidth.com/numbers/about.html)
+[API Reference Guide](https://dev.bandwidth.com/numbers/apiReference.html)
+
+
+The IRIS API handles all account and number management within Bandwidth. Users can create/modify/delete sub-accounts and locations, provision new TN's, port in in outside numbers, and modify settings account-wide using this API, among other things. IRIS is Bandwidth's largest service and is used by a multitude of internal and external customers. The IRIS API is what powers the [Bandwidth Dashboard](dashboard.bandwidth.com). Any actions taken here can be replicated with an API call, meaning that anything you do within the Bandwidth Dashboard could be automated and done programatically.
 
 ### Voice
 ##### Overview
 Base URL: `https://voice.bandwidth.com/api/v2/accounts/{accountId}`
-##### Voice Callbacks
+Language: `JSON` and `BXML`
+Team Slack Channel: #voiceapi-chat
+[Developer Documentation](https://dev.bandwidth.com/voice/about.html)
+[API Reference Guide](https://dev.bandwidth.com/voice/methods/about.html)
+
+The Voice API allows customers to automate and control the receipt and creation of phone calls. Powered by the Bandwidth Network, the API and callbacks allow customers to create and control telephone calls to live numbers in real time. When an incoming call is received, Bandwidth sends a JSON webhook to the callback URL declared in the application and expects instructions, in the form of BXML verbs, letting Bandwidth know what to do next.
+
 ##### BXML
+There are a multitude of [available BXML](https://dev.bandwidth.com/voice/bxml/about.html) verbs that users can respond to webhooks with. We suggest taking a look at each, along with their descriptions and available parameters. Verbs can be stacked and will be executed in the order they are stacked in. For example, stacking a play audio verb before a record verb would allow you to execute something like saying "please record your message," and then recording a voicemail from a live person on the other end of the call.
 
 ### Messaging
 ##### Overview
 Base URL: `https://messaging.bandwidth.com/api/v2/users/{accountId}`
-##### Message Callbacks
-##### Message Errors
+Language: `JSON`
+Team Slack Channel: #messaging-chat
+[Developer Documentation](https://dev.bandwidth.com/messaging/about.html)
+[API Reference Guide](https://dev.bandwidth.com/messaging/methods/about.html)
+
+The messaging API allows users to send and receive SMS and MMS messages from computer to handset and vice versa. The API is callback driven, and sends a webhook for every message sent and received by a telephone number. 
 
 ### e911
 ##### Overview
 Base URL: `https://service.dashcs.com/dash-api/xml/emergencyprovisioning/v1`
+Language: `XML`
+Team Slack Channel: #evs-general
+
+
+
 ##### DASH
 ##### IRIS e911
 
