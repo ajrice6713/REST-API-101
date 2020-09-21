@@ -38,17 +38,17 @@ This repository intends to serve as a 101 overview of REST API's with a focus on
   * [Bandwidth API FAQ's](#bandwidth-api-faqs)
     * [Rate Limits](#rate-limits)
 * [Resources and Tools](#resources-and-tools)
-* [Glossary](#glossary)
+* [Glossary](GLOSSARY.md)
 
 ## API 101
 
 ### So What is an API, Anyways?
-An API, or Application Programming Interface, can be thought of as a set of rules and regulations that define interactions between programs. The API determines what requests can be made to a service, what those requests need to look like, and what the expected response will be to each request. [Mulesoft](https://www.mulesoft.com/resources/api/what-is-an-api) provides a great real-world example of an API. Consider eating out at a restaurant - you're given a menu and the restaurant is equipped to prepare a certain subset of meals. How do you (the user) convey your order to the chef (backend code) that prepares the food? Thankfully, this restaurant comes equipped with a server (API)! The server, like an API, inspects your order (request) to make sure its something on the menu, and passes it off to the chef to process once they confirm that whats ordered is on the menu.
+Consider eating out at a restaurant - you're given a menu and the restaurant is equipped to prepare a certain subset of meals. How do you (the user) convey your order to the chef (backend code) that prepares the food? Thankfully, this restaurant comes equipped with a server (API)! The server, like an API, inspects your order (request) to make sure its something on the menu, and passes it off to the chef to process once they confirm that whats ordered is on the menu<sup>[1](https://www.mulesoft.com/resources/api/what-is-an-api)</sup>. An API, or Application Programming Interface, can be thought of as a set of rules and regulations that define interactions between programs. The API determines what requests can be made to a service, what those requests need to look like, and what the expected response will be to each request.
 
-API's are everywhere, and we interact with them on a daily basis. Posting to social media, for example, flows through an API in the form of an HTTP request. You, the user, fill in text and media fields in a user interface (UI) and click 'submit.' Once submitted, the UI makes an HTTP API request which validates the content in the text and media fields, among other things, before your new content is actually posted to the service. The Bandwidth Dashboard UI sits on top of the IRIS API - meaning that requests made in the Bandwidth Dashboard pass through the IRIS API, and we can use built-in browser tools to inspect these requests and see them being made in real-time!
+API's are everywhere, and we interact with them on a daily basis. Posting to social media, for example, flows through an API in the form of an HTTP (web) request. You, the user, fill in text and media fields in a user interface (UI) and click 'submit.' Once submitted, the UI makes an HTTP API request which validates the content in the text and media fields, among other things, before your new content is actually posted to the service. The Bandwidth Dashboard UI sits on top of the IRIS API - meaning that requests made in the Bandwidth Dashboard pass through the IRIS API, and we can use built-in browser tools to inspect these requests and see them being made in real-time!
 
 ### Anatomy of an HTTP Request
-To interact with an API, you would send an HTTP request containing a method, URL, headers, and body.
+So now that we know what an API is, how do we use it? Well, it all starts with a request - an HTTP request to be exact. Think of this as the part where you tell the waiter exactly what it is you want. The request could be asking the waiter what the specials are (think GET `/specials`), telling them what you want to order (POST `/orders`), and telling them to change your order when you inevitably change your mind a few minutes later (PUT `/orders/myOrder`). To interact with an API, you would send an HTTP request that contains a method, URL, headers, and body.
 
 #### Methods
 We will discuss HTTP methods in more detail in a [later section](#restful-methods), but, at a high level, the method lets the API know what kind of request you are making. Like the restaurant example, you would make a `GET` request to the server to get more information about a menu item, a `POST` request to place your order, a `PUT` request to modify it, and a `DELETE` request to cancel it.
@@ -303,7 +303,7 @@ Team Slack Channel: #messaging-chat
 [Developer Documentation](https://dev.bandwidth.com/messaging/about.html)
 [API Reference Guide](https://dev.bandwidth.com/messaging/methods/about.html)
 
-The messaging API allows users to send and receive SMS and MMS messages from computer to handset and vice versa. The API is callback driven, and sends a webhook for every message sent and received by a telephone number. 
+The messaging API allows users to send and receive SMS and MMS messages from computer to handset and vice versa. The API is callback driven, and sends a webhook for every message sent and received by a telephone number.
 
 ### e911
 ##### Overview
