@@ -279,7 +279,6 @@ Team Slack Channel: #irischat
 [Developer Documentation](https://dev.bandwidth.com/numbers/about.html)
 [API Reference Guide](https://dev.bandwidth.com/numbers/apiReference.html)
 
-
 The IRIS API handles all account and number management within Bandwidth. Users can create/modify/delete sub-accounts and locations, provision new TN's, port in in outside numbers, and modify settings account-wide using this API, among other things. IRIS is Bandwidth's largest service and is used by a multitude of internal and external customers. The IRIS API is what powers the [Bandwidth Dashboard](dashboard.bandwidth.com). Any actions taken here can be replicated with an API call, meaning that anything you do within the Bandwidth Dashboard could be automated and done programatically.
 
 ### Voice
@@ -292,8 +291,31 @@ Team Slack Channel: #voiceapi-chat
 
 The Voice API allows customers to automate and control the receipt and creation of phone calls. Powered by the Bandwidth Network, the API and callbacks allow customers to create and control telephone calls to live numbers in real time. When an incoming call is received, Bandwidth sends a JSON webhook to the callback URL declared in the application and expects instructions, in the form of BXML verbs, letting Bandwidth know what to do next.
 
+The easiest way to visualize the voice API is like a game of call and response - Bandwidth sends a 'call' in the form of `JSON` information and expects a response containing BXML, telling us what to do next with the phone call. Users build these instructions using different BXML verbs, and send them in their HTTP response.
+
 ##### BXML
 There are a multitude of [available BXML](https://dev.bandwidth.com/voice/bxml/about.html) verbs that users can respond to webhooks with. We suggest taking a look at each, along with their descriptions and available parameters. Verbs can be stacked and will be executed in the order they are stacked in. For example, stacking a play audio verb before a record verb would allow you to execute something like saying "please record your message," and then recording a voicemail from a live person on the other end of the call.
+
+The below example shows a webhook sent by Bandwidth containing digits pressed by the end user, which can be requested using a `<Gather>` verb:
+
+```JSON
+{
+    "eventType"        : "gather",
+    "accountId"        : "55555555",
+    "applicationId"    : "7fc9698a-b04a-468b-9e8f-91238c0d0086",
+    "startTime"        : "2019-06-20T15:54:22.234Z",
+    "answerTime"          : "2019-06-20T15:54:25.432Z",
+    "from"             : "+15551112222",
+    "to"               : "+15553334444",
+    "direction"        : "outbound",
+    "callId"           : "c-95ac8d6e-1a31c52e-b38f-4198-93c1-51633ec68f8d",
+    "callUrl"          : "https://voice.bandwidth.com/api/v2/accounts/55555555/calls/c-95ac8d6e-1a31c52e-b38f-4198-93c1-51633ec68f8d",
+    "digits"           : "2",
+    "terminatingDigit" : ""
+}
+```
+
+In the callback, you can see the value for `digits` is 2. Let's say you asked your user to press 1 to be transferred to sales or 2 to be transferred to customer service, and you can see that the user pressed 2. Now, you can return more BXML to let Bandwidth know which number to transfer the call to. Examples of what the callbacks look like for different types of events can be found [here](https://dev.bandwidth.com/voice/bxml/callbacks/about.html).
 
 ### Messaging
 ##### Overview
@@ -303,17 +325,46 @@ Team Slack Channel: #messaging-chat
 [Developer Documentation](https://dev.bandwidth.com/messaging/about.html)
 [API Reference Guide](https://dev.bandwidth.com/messaging/methods/about.html)
 
-The messaging API allows users to send and receive SMS and MMS messages from computer to handset and vice versa. The API is callback driven, and sends a webhook for every message sent and received by a telephone number.
+The messaging API allows users to send and receive SMS and MMS messages from computer to handset and vice versa. The API is callback driven, and sends a webhook for every message sent and received by a telephone number. Users can create text message blasts, respond to incoming messages from other telephone numbers, or create text message events to send when users interact with a service through an existing portal, like an app or website. When someone sends a text to a Bandwidth telephone number, this is the `JSON` generated and sent to the callback URL:
+
+```JSON
+[
+  {
+    "type"        : "message-received",
+    "time"        : "2016-09-14T18:20:16Z",
+    "description" : "Incoming message received",
+    "to"          : "+12345678902",
+    "message"     : {
+      "id"            : "14762070468292kw2fuqty55yp2b2",
+      "time"          : "2016-09-14T18:20:16Z",
+      "to"            : ["+12345678902"],
+      "from"          : "+12345678901",
+      "text"          : "Hey, check this out!",
+      "applicationId" : "93de2206-9669-4e07-948d-329f4b722ee2",
+      "media"         : [
+        "https://messaging.bandwidth.com/api/v2/users/{accountId}/media/14762070468292kw2fuqty55yp2b2/0/bw.png"
+        ],
+      "owner"         : "+12345678902",
+      "direction"     : "in",
+      "segmentCount"  : 1
+    }
+  }
+]
+```
 
 ### e911
 ##### Overview
-Base URL: `https://service.dashcs.com/dash-api/xml/emergencyprovisioning/v1`
+Base URL (DASH): `https://service.dashcs.com/dash-api/xml/emergencyprovisioning/v1`
+Base URL (IRIS): `https://dashboard.bandwidth.com/api/`
 Language: `XML`
 Team Slack Channel: #evs-general
+[DASH API Guide](https://support.bandwidth.com/hc/en-us/articles/115006226067-911-Dashboard-API-Guide)
 
-
+There are 2 API's within Bandwidth that allow users to add address information that will be sent to a Public Safety Answering Point (PSAP) when a 911 call is made from that number; the DASH API, and the IRIS API.
 
 ##### DASH
+DASH was an existing API acquired by Bandwidth, allowing us to offer 911 provisioning as a service. 
+
 ##### IRIS e911
 
 ### Subscriptions
