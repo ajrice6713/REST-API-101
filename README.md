@@ -48,7 +48,7 @@ Consider eating out at a restaurant - you're given a menu and the restaurant is 
 API's are everywhere, and we interact with them on a daily basis. Posting to social media, for example, flows through an API in the form of an HTTP (web) request. You, the user, fill in text and media fields in a user interface (UI) and click 'submit.' Once submitted, the UI makes an HTTP API request which validates the content in the text and media fields, among other things, before your new content is actually posted to the service. The Bandwidth Dashboard UI sits on top of the IRIS API - meaning that requests made in the Bandwidth Dashboard pass through the IRIS API, and we can use built-in browser tools to inspect these requests and see them being made in real-time!
 
 ### Anatomy of an HTTP Request
-So now that we know what an API is, how do we use it? Well, it all starts with a request - an HTTP request to be exact. Think of this as the part where you tell the waiter exactly what it is you want. The request could be asking the waiter what the specials are (think GET `/specials`), telling them what you want to order (POST `/orders`), and telling them to change your order when you inevitably change your mind a few minutes later (PUT `/orders/myOrder`). To interact with an API, you would send an HTTP request that contains a method, URL, headers, and body.
+So now that we know what an API is, how do we use it? Well, it all starts with a request - an HTTP request to be exact. Think of this as the part where you tell the waiter exactly what it is you want. The request could be asking the waiter what the specials are (think GET `/specials`), telling them what you want to order (POST `/orders`), and telling them to change your order when you inevitably change your mind a few minutes later (PUT `/orders/myOrder`). To interact with an API, you would send an HTTP request that contains a method, a URL, and possibly other information like headers and a body.
 
 #### Methods
 We will discuss HTTP methods in more detail in a [later section](#restful-methods), but, at a high level, the method lets the API know what kind of request you are making. Like the restaurant example, you would make a `GET` request to the server to get more information about a menu item, a `POST` request to place your order, a `PUT` request to modify it, and a `DELETE` request to cancel it.
@@ -363,7 +363,7 @@ Team Slack Channel: #evs-general
 There are 2 API's within Bandwidth that allow users to add address information that will be sent to a Public Safety Answering Point (PSAP) when a 911 call is made from that number; the DASH API, and the IRIS API.
 
 ##### DASH
-DASH was an existing API acquired by Bandwidth, allowing us to offer 911 provisioning as a service. 
+DASH was an existing API acquired by Bandwidth, allowing us to offer 911 provisioning as a service.
 
 ##### IRIS e911
 
