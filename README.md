@@ -34,9 +34,7 @@ This repository intends to serve as a 101 overview of REST API's with a focus on
   * [Messaging](#messaging)
   * [e911](#e911)
   * [Subscriptions](#subscriptions)
-  * [Common User Mistakes](#common-user-mistakes)
   * [Bandwidth API FAQ's](#bandwidth-api-faqs)
-    * [Rate Limits](#rate-limits)
 * [Resources and Tools](#resources-and-tools)
 * [Glossary](GLOSSARY.md)
 
@@ -263,10 +261,10 @@ Bandwidth follows an account -> Sub-Account -> location hierarchy. A single IRIS
 Users can be UI (user-interface) only, API only, or BOTH. API only users do not require password resets, whereas the other two user types do require password resets. A guide on creating API users can be found [here](https://dev.bandwidth.com/guides/accountCredentials.html#top). Because the username and password need to be sent in the HTTP API requests, it is more beneficial to create an API only user and provide those credentials in your API calls, because there wont be a risk of credentials expiring and your automated API calls suddenly failing with `401 Unauthorized` errors due to an expired or incorrect password. Users can have different roles toggled on or off as well, and these roles determine which parts of the API a user can access. If a certain user role is disabled and the user tries to make an API call that falls under that role, they will see a `403 Forbidden` response from the API, indicating that even though the username/password combination is a valid one, they are unable to perform the action they are attempting.
 
 ##### Sub-Accounts (Sites)
-Sub-Accounts exist for organizational purposes, and are referred to as Sites in the API. At least one sub account is required per account with a valid address for billing purposes.
+Sub-Accounts exist for organizational purposes, and are referred to as `Sites` in the API. At least one sub-account is required per account with a valid address for billing purposes.
 
 ##### Locations (Sip-Peers)
-A Location, referred to as a SipPeer in the API, can best be thought of as a logical grouping of phone numbers. Locations can control things like SMS and MMS enablement, and any telephone numbers added to the location will inherit its settings by default. One location is required to utilize Bandwidth's service, and one default location is required per sub-account. When provisioning telephone numbers, if a location is not specified in the API request, the number will provision to the default location of that sub-account.
+A Location, referred to as a `SipPeer` in the API, can best be thought of as a logical grouping of phone numbers. Locations can control things like SMS and MMS enablement, and any telephone numbers added to the location will inherit it's settings by default. One location is required to utilize Bandwidth's service, and one default location is required per sub-account. When provisioning telephone numbers, if a location is not specified in the API request, the number will provision to the default location of that sub-account.
 
 ##### Applications
 Bandwidth Applications are where users set the callback URL for webhooks. An application can either be designated as a voice or messaging application, and users can associate one or multiple locations to each application. It is important to note that a location can only be associated to 1 messaging application and 1 voice application - but that an application can have many locations associated to it. When a messaging/voice event happens on a number, Bandwidth checks the IRIS database to determine which location the number lives in and what application it is associated to, and it is there we find the callback URL to send the webhook for the event.
@@ -317,6 +315,17 @@ The below example shows a webhook sent by Bandwidth containing digits pressed by
 
 In the callback, you can see the value for `digits` is 2. Let's say you asked your user to press 1 to be transferred to sales or 2 to be transferred to customer service, and you can see that the user pressed 2. Now, you can return more BXML to let Bandwidth know which number to transfer the call to. Examples of what the callbacks look like for different types of events can be found [here](https://dev.bandwidth.com/voice/bxml/callbacks/about.html).
 
+A proper BXML response to transfer the above call to a different number would look something like this:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <SpeakSentence gender="male">Transferring your call, please wait.</SpeakSentence>
+    <Transfer transferCallerId="+15553334444">
+        <PhoneNumber>+15554567892</PhoneNumber>
+    </Transfer>
+</Response>
+```
+
 ### Messaging
 ##### Overview
 Base URL: `https://messaging.bandwidth.com/api/v2/users/{accountId}`
@@ -363,22 +372,50 @@ Team Slack Channel: #evs-general
 There are 2 API's within Bandwidth that allow users to add address information that will be sent to a Public Safety Answering Point (PSAP) when a 911 call is made from that number; the DASH API, and the IRIS API.
 
 ##### DASH
-DASH was an existing API acquired by Bandwidth, allowing us to offer 911 provisioning as a service.
+DASH was an existing API acquired by Bandwidth, allowing us to offer 911 provisioning as a service. The DASH API allows users to provision endpoints (telephone numbers) with 911 address information that is used to route the call to the correct local PSAP (public safety answering point) at the time of a call to 911.
 
 ##### IRIS e911
+The IRIS team and EVS team are working to integrate the DASH API into IRIS to allow one platform to handle all services. At this time, the IRIS API allows customers utilize our [DLR (Dynamic Location Routing)](https://www.bandwidth.com/911/dynamic-location-routing/) service, currently unavailable in the DASH API. More on setting up DLR via API can be found [here](https://support.bandwidth.com/hc/en-us/sections/360001336774-911-Dynamic-Location-Routing-DLR-). DLR is essentially a service that allows users to provision several addresses ahead of time and apply a certain one to a 911 call as it passes through the Bandwidth network. This gives users flexibility when making 911 calls as opposed to having a fixed location (address) associated with an endpoint.
 
 ### Subscriptions
-
-### Common User Mistakes
+Subscriptions are resources created by users that allow them to receive webhook notifications from asynchronous actions in the Bandwidth API's. As mentioned before, when make an asynchronous request to an API, the response tells them that the API received their request and is working on it, but the action hasn't fully completed (think ordering a telephone number in IRIS). A subscription allows users to provide Bandwidth with a publicly addressable URL to send a callback notification when the status has changed on an asynchronous operation (like an order completing successfully, partially, or failing). Subscriptions eliminate the need for polling, or constantly making requests to the API, to get the status of an order or operation.
 
 ### Bandwidth API FAQ's
-##### Rate Limits
-##### Static IP's
+
+##### How do I create API Credentials?
+[See this guide](https://dev.bandwidth.com/guides/accountCredentials.html#top)
+
+##### What are Rate Limits?
+Rate limits are thresholds on the number of API requests a customer can make in a given period of time. For sending messages, this is set at different amounts for different accounts. More on rate limits can be foind [here (IRIS)](https://dev.bandwidth.com/numbers/rateLimits.html) and [here (messaging)](https://dev.bandwidth.com/messaging/ratelimits.html#top).
+
+##### What are Bandwidth's Static IP's?
+Messaging:
+  * 18.233.250.246
+  * 3.82.123.96
+  * 52.72.24.132
+  * 54.203.195.28
+  * 54.212.144.187
+  * 54.213.231.6
+
+Voice:
+  * 67.231.0.0/20
+  * 109.71.152.0/22
+
+IRIS:
+  * 216.82.230.0/23
 
 ## Resources and Tools
-##### Postman
-##### Ngrok
-##### RequestBin
+
 ##### Dev.Bandwidth
+The single source of truth for all things Bandwidth API related, [Dev.Bandwidth.com](https://dev.bandwidth.com/) is the home for all of the Bandwidth developer documentation. This includes the API Reference, guides and tutorials, and links to various sample apps illustrating the functionality of each service.
+
+##### Postman
+Postman is an API tool that allows you to create and send API requests and inspect the responses. More information can be found [here](https://www.postman.com/). A Postman collection is included in this repository - you can download it and add it to Postman to see some example API Calls to the different Bandwidth services.
+
+##### Ngrok
+Ngrok allows you to turn your local machine into a publicly addressable server, it is great for testing local development and allows you to receive webhooks directly on your machine. More information can be found [here](https://ngrok.com/).
+
+##### RequestBin
+RequestBin provides users with a free. publicly accessible webhook dump; a URL that receives webhooks and allows you to inspect them. It is useful to test webhook delivery and get an idea of how callbacks are structured before sending them to a personal server. More information can be found [here](https://pipedream.com/?loc=home).
 
 ## Glossary
