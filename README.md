@@ -264,7 +264,7 @@ Users can be UI (user-interface) only, API only, or BOTH. API only users do not 
 Sub-Accounts exist for organizational purposes, and are referred to as `Sites` in the API. At least one sub-account is required per account with a valid address for billing purposes.
 
 ##### Locations (Sip-Peers)
-A Location, referred to as a `SipPeer` in the API, can best be thought of as a logical grouping of phone numbers. Locations can control things like SMS and MMS enablement, and any telephone numbers added to the location will inherit it's settings by default. One location is required to utilize Bandwidth's service, and one default location is required per sub-account. When provisioning telephone numbers, if a location is not specified in the API request, the number will provision to the default location of that sub-account.
+A Location, referred to as a `SipPeer` in the API, can best be thought of as a logical grouping of phone numbers. Locations can control things like SMS and MMS enablement, and any telephone numbers added to the location will inherit its settings by default. One location is required to utilize Bandwidth's service, and one default location is required per sub-account. When provisioning telephone numbers, if a location is not specified in the API request, the number will provision to the default location of that sub-account.
 
 ##### Applications
 Bandwidth Applications are where users set the callback URL for webhooks. An application can either be designated as a voice or messaging application, and users can associate one or multiple locations to each application. It is important to note that a location can only be associated to 1 messaging application and 1 voice application - but that an application can have many locations associated to it. When a messaging/voice event happens on a number, Bandwidth checks the IRIS database to determine which location the number lives in and what application it is associated to, and it is there we find the callback URL to send the webhook for the event.
@@ -378,7 +378,7 @@ DASH was an existing API acquired by Bandwidth, allowing us to offer 911 provisi
 The IRIS team and EVS team are working to integrate the DASH API into IRIS to allow one platform to handle all services. At this time, the IRIS API allows customers utilize our [DLR (Dynamic Location Routing)](https://www.bandwidth.com/911/dynamic-location-routing/) service, currently unavailable in the DASH API. More on setting up DLR via API can be found [here](https://support.bandwidth.com/hc/en-us/sections/360001336774-911-Dynamic-Location-Routing-DLR-). DLR is essentially a service that allows users to provision several addresses ahead of time and apply a certain one to a 911 call as it passes through the Bandwidth network. This gives users flexibility when making 911 calls as opposed to having a fixed location (address) associated with an endpoint.
 
 ### Subscriptions
-Subscriptions are resources created by users that allow them to receive webhook notifications from asynchronous actions in the Bandwidth API's. As mentioned before, when make an asynchronous request to an API, the response tells them that the API received their request and is working on it, but the action hasn't fully completed (think ordering a telephone number in IRIS). A subscription allows users to provide Bandwidth with a publicly addressable URL to send a callback notification when the status has changed on an asynchronous operation (like an order completing successfully, partially, or failing). Subscriptions eliminate the need for polling, or constantly making requests to the API, to get the status of an order or operation.
+Subscriptions are resources created by users that allow them to receive webhook notifications from asynchronous actions in the Bandwidth API's. As mentioned before, when a user makes an asynchronous request to an API, the response tells them that the API received their request and is working on it, but the action hasn't fully completed (think ordering a telephone number in IRIS). A subscription allows users to provide Bandwidth with a publicly addressable URL to send a callback notification when the status has changed on an asynchronous operation (like an order completing successfully, partially, or failing). Subscriptions eliminate the need for polling, or constantly making requests to the API, to get the status of an order or operation.
 
 ### Bandwidth API FAQ's
 
@@ -408,6 +408,14 @@ IRIS:
 
 ##### Dev.Bandwidth
 The single source of truth for all things Bandwidth API related, [Dev.Bandwidth.com](https://dev.bandwidth.com/) is the home for all of the Bandwidth developer documentation. This includes the API Reference, guides and tutorials, and links to various sample apps illustrating the functionality of each service.
+
+##### SDK's
+An SDK (Software Development Kit) is a set of predefined functions that can be imported into a programming language to make performing certian actions easier. Instead of having to build raw http requests in the programming language, users could instead write code along the lines of
+```
+import bandwidth_sdk
+createCall(toNumber, fromNumber)
+```
+and the SDK will build the http requests and send it to the correct place. SDK's generally ensure more accuracy and allow for an easier development experience when integrating with API's. The various SDK's Bandwidth offers and maintains can be found [here](https://dev.bandwidth.com/sdks/about.html). 
 
 ##### Postman
 Postman is an API tool that allows you to create and send API requests and inspect the responses. More information can be found [here](https://www.postman.com/). A Postman collection is included in this repository - you can download it and add it to Postman to see some example API Calls to the different Bandwidth services.
