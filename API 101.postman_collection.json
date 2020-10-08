@@ -1,0 +1,573 @@
+{
+	"info": {
+		"_postman_id": "ec57436f-3564-43a3-9850-479febb3635a",
+		"name": "API 101",
+		"description": "A collection of API request examples pertaining to the [Bandwidth API 101 Guide]()",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "IRIS",
+			"item": [
+				{
+					"name": "Create Phone Number Order",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<Order>\n    <CustomerOrderId>123456789</CustomerOrderId>\n    <Name>Test order name</Name>\n    <!--AreaCodeSearchAndOrderType>\n        <AreaCode>949</AreaCode>\n        <Quantity>1</Quantity>\n    </AreaCodeSearchAndOrderType-->\n    <ExistingTelephoneNumberOrderType>\n        <TelephoneNumberList>\n            <TelephoneNumber>9198675309</TelephoneNumber>\n        </TelephoneNumberList>\n    </ExistingTelephoneNumberOrderType>\n    <SiteId>{{siteId}}</SiteId><!--Required-->\n    <PeerId>{{sippeerId}}</PeerId><!--Not required, number will provision to default location if not declared-->\n</Order>",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.bandwidth.com/api/accounts/{{accountId}}/orders",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"bandwidth",
+								"com"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Available Numbers",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://dashboard.bandwidth.com/api/accounts/{{accountId}}/availableNumbers?tollfreewildcardpattern=87*&quantity=50",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"bandwidth",
+								"com"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"availableNumbers"
+							],
+							"query": [
+								{
+									"key": "tollfreewildcardpattern",
+									"value": "87*"
+								},
+								{
+									"key": "areacode",
+									"value": "772",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "50",
+									"disabled": true
+								},
+								{
+									"key": "zip",
+									"value": "30077",
+									"disabled": true
+								},
+								{
+									"key": "state",
+									"value": "PR",
+									"disabled": true
+								},
+								{
+									"key": "localVanity",
+									"value": "9193___",
+									"disabled": true
+								},
+								{
+									"key": "isAdvancedSearch",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "enableTNDetail",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "LCA",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "quantity",
+									"value": "50"
+								},
+								{
+									"key": "npaNxx",
+									"value": "213485",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TnOptions",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<TnOptionOrder>\n    <CustomerOrderId>TnOptionOrder1</CustomerOrderId>\n    <TnOptionGroups>\n        <TnOptionGroup>\n            <NumberFormat>10digit</NumberFormat>\n            <RPIDFormat>10digit</RPIDFormat>\n            <RewriteUser>testUser1</RewriteUser>\n            <CallForward>6042661720</CallForward>\n            <CallingNameDisplay>on</CallingNameDisplay>\n            <PortOutPasscode>a1b2c3</PortOutPasscode>\n            <Protected>true</Protected>\n            <Sms>on</Sms>\n            <FinalDestinationURI>sip:+12345678901@1.2.3.4:5060</FinalDestinationURI>\n            <A2pSettings>\n                <MessageClass>M</MessageClass>\n                <CampaignId>campaignId010</CampaignId>\n                <Action>asSpecified</Action>\n            </A2pSettings>\n            <TelephoneNumbers>\n                <TelephoneNumber>2018551020</TelephoneNumber>\n            </TelephoneNumbers>\n        </TnOptionGroup>\n        <TnOptionGroup>\n            <CallingNameDisplay>off</CallingNameDisplay>\n            <Protected>false</Protected>\n            <Sms>off</Sms>\n            <OriginationRoutePlan>\n                <Route>\n                    <Endpoint>6105552502</Endpoint>\n                    <Priority>1</Priority>\n                    <Weight>100</Weight>\n                </Route>\n                <Route>\n                    <Endpoint>sip:clarkkent@dailyplanet.com</Endpoint>\n                    <Priority>2</Priority>\n                    <Weight>100</Weight>\n                </Route>\n                <Route>\n                    <Endpoint>192.168.20.21</Endpoint>\n                    <Priority>3</Priority>\n                    <Weight>50</Weight>\n                </Route>\n                <Route>\n                    <Endpoint>7075552509</Endpoint>\n                    <Priority>3</Priority>\n                    <Weight>50</Weight>\n                </Route>\n                <Route>\n                    <Endpoint>myhost.bandwidth.example</Endpoint>\n                    <Priority>4</Priority>\n                    <Weight>100</Weight>\n                </Route>\n                <Action>asSpecified</Action>\n            </OriginationRoutePlan>\n            <TelephoneNumbers>\n                <TelephoneNumber>2018551025</TelephoneNumber>\n            </TelephoneNumbers>\n        </TnOptionGroup>\n    </TnOptionGroups>\n</TnOptionOrder>\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.bandwidth.com/api/accounts/{{accountId}}/tnoptions",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"bandwidth",
+								"com"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"tnoptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MoveTns",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<SipPeerTelephoneNumbers>\n    <!--Site and sip peer in the URL need to be the destination you want to move TO-->\n    <FullNumber>9198675309</FullNumber>\n    <!--SNIP-->\n    <FullNumber>9198675309</FullNumber>\n</SipPeerTelephoneNumbers>\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://dashboard.bandwidth.com/api/accounts/{{accountId}}/sites/{{siteId}}/sippeers/{{sippeerId}}/moveTns",
+							"protocol": "https",
+							"host": [
+								"dashboard",
+								"bandwidth",
+								"com"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"{{accountId}}",
+								"sites",
+								"{{siteId}}",
+								"sippeers",
+								"{{sippeerId}}",
+								"moveTns"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Messaging",
+			"item": [
+				{
+					"name": "Send an SMS",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic OGJkMjIzZjIzZjQ4NmU1MDE5MTFhZWFhM2IxMjI4N2YzYWJiYjM1YmE2MzA0NWVjOmMxNTU4M2U0NjFmY2EzMDhiMjU4NjUzMWU4NDQ3Yjg0YjgxYmE4ODJkZWUwNGJkZQ==",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"to\"            : [\"{{toNumber}}\"],\n    \"from\"          : \"{{fromNumber}}\",\n    \"text\"          : \"Test Message\",\n    \"applicationId\" : \"{{msgApplicationId}}\",\n    \"tag\"           : \"test message\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://messaging.bandwidth.com/api/v2/users/{{accountId}}/messages",
+							"protocol": "https",
+							"host": [
+								"messaging",
+								"bandwidth",
+								"com"
+							],
+							"path": [
+								"api",
+								"v2",
+								"users",
+								"{{accountId}}",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Voice",
+			"item": [
+				{
+					"name": "Create a Call",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"from\"         : \"{{fromNumber}}\",\n    \"to\"           : \"{{toNumber}}\",\n    \"answerUrl\"    : \"{{voiceAnswerUrl}}\",\n    \"applicationId\": \"{{voiceApplicationId}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://voice.bandwidth.com/api/v2/accounts/{{accountId}}/calls",
+							"protocol": "https",
+							"host": [
+								"voice",
+								"bandwidth",
+								"com"
+							],
+							"path": [
+								"api",
+								"v2",
+								"accounts",
+								"{{accountId}}",
+								"calls"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DASH",
+			"item": [
+				{
+					"name": "Add Location",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{dashUsername}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{dashPassword}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<addLocation>\n <uri>\n   <callername>Bandwidth Support</callername>\n   <uri>13032288888</uri>\n </uri>\n <location>\n   <address1>2040 Larimer</address1>\n   <callername>Bandwidth Support</callername>\n   <community>Denver</community>\n   <postalcode>80201</postalcode>\n   <state>CO</state>\n   <type>ADDRESS</type>\n </location>\n</addLocation>",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://staging-service.dashcs.com/dash-api/xml/emergencyprovisioning/v1/addlocation",
+							"protocol": "https",
+							"host": [
+								"staging-service",
+								"dashcs",
+								"com"
+							],
+							"path": [
+								"dash-api",
+								"xml",
+								"emergencyprovisioning",
+								"v1",
+								"addlocation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate Location",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{dashPassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{dashUsername}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<validateLocation>\n  <location>\n    <address1>900 Main Campus Dr</address1>\n    <community>Raleigh</community>\n    <state>NC</state>\n    <postalcode>27606</postalcode>\n    <type>ADDRESS</type>\n  </location>\n</validateLocation>",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://staging-service.dashcs.com/dash-api/xml/emergencyprovisioning/v1/validatelocation",
+							"protocol": "https",
+							"host": [
+								"staging-service",
+								"dashcs",
+								"com"
+							],
+							"path": [
+								"dash-api",
+								"xml",
+								"emergencyprovisioning",
+								"v1",
+								"validatelocation"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "df2ca8da-e908-4055-af35-62d1d51bd3c5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "5ec04721-4f56-432e-938e-7bc452c0c503",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "c2132a17-78d5-4204-9d36-ee512377882f",
+			"key": "username",
+			"value": ""
+		},
+		{
+			"id": "1d43f72c-bdf4-407b-9cf7-7f8e5053d286",
+			"key": "password",
+			"value": ""
+		},
+		{
+			"id": "07b0b817-40de-4aac-b66c-4557687cc68d",
+			"key": "accountId",
+			"value": ""
+		},
+		{
+			"id": "08a7c8a8-52b7-41bb-a67c-de0d20a5d91e",
+			"key": "siteId",
+			"value": ""
+		},
+		{
+			"id": "edc9a59e-c282-43f3-af7a-8e572a246792",
+			"key": "sippeerId",
+			"value": ""
+		},
+		{
+			"id": "1bb686f3-f59c-47e3-87a5-57fb3f826895",
+			"key": "toNumber",
+			"value": ""
+		},
+		{
+			"id": "e1b45e03-d987-48c2-8b8f-862cce4c909c",
+			"key": "fromNumber",
+			"value": ""
+		},
+		{
+			"id": "7876be52-cf93-4d98-b94d-d115d7cdf198",
+			"key": "msgApplicationId",
+			"value": ""
+		},
+		{
+			"id": "6a785561-46ec-4fda-817e-6667f510604f",
+			"key": "voiceApplicationid",
+			"value": ""
+		},
+		{
+			"id": "874ea08c-e653-4289-bf4c-4562acc48053",
+			"key": "voiceAnswerUrl",
+			"value": ""
+		},
+		{
+			"id": "7e1d7e89-24f5-4ed5-8425-ae0c2866a620",
+			"key": "dashUsername",
+			"value": ""
+		},
+		{
+			"id": "a0af3765-3811-4d70-8586-acba89eba719",
+			"key": "dashPassword",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}
